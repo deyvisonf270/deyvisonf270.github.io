@@ -3,244 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão de Pedidos - Peixaria</title>
+    <title>Mar Blue | Sistema de Vendas</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Custom scrollbar para a tabela */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
 </head>
-<body class="bg-slate-100 font-sans min-h-screen">
+<body class="bg-slate-50 min-h-screen text-slate-800 antialiased">
 
-    <header class="bg-blue-600 text-white shadow-md p-4 mb-6">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold flex items-center gap-2">
-                <i class="fas fa-fish"></i> Peixaria Mar Aberto
-            </h1>
-            <p class="text-sm bg-blue-700 px-3 py-1 rounded-full">Painel de Vendas</p>
+    <nav class="bg-slate-900 text-white sticky top-0 z-50 shadow-lg border-b border-slate-800">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="bg-blue-500 p-2.5 rounded-xl shadow-md shadow-blue-500/20">
+                    <i class="fas fa-fish text-xl text-white"></i>
+                </div>
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-blue-400 block -mb-1">Sistema PDV</span>
+                    <h1 class="text-xl font-extrabold tracking-tight">Mar Blue <span class="font-light text-slate-400">Peixaria</span></h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 text-sm text-slate-400 bg-slate-800/50 px-4 py-2 rounded-xl border border-slate-700/50">
+                <span class="flex items-center gap-2"><i class="fas fa-circle text-emerald-500 text-[10px] animate-pulse"></i> Caixa Aberto</span>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <main class="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-6 pb-12">
-        
-        <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200">
-            <h2 class="text-xl font-semibold mb-4 text-slate-800 flex items-center gap-2">
-                <i class="fas fa-cart-plus text-blue-600"></i> Registrar Pedido
-            </h2>
+    <main class="container mx-auto px-4 lg:px-6 py-8 max-w-7xl">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            <form id="form-pedido" class="space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Cliente</label>
-                    <input type="text" id="cliente" required placeholder="Nome do cliente" 
-                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <div class="lg:col-span-5 bg-white rounded-2xl shadow-sm border border-slate-200/80 p-6 lg:p-8">
+                <div class="mb-6">
+                    <h2 class="text-xl font-bold text-slate-900 tracking-tight">Novo Pedido</h2>
+                    <p class="text-sm text-slate-500 mt-1">Insira os dados do cliente e o peso para o cálculo automático.</p>
                 </div>
 
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Selecione o Peixe</label>
-                    <select id="select-peixe" required 
-                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        </select>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Peso (kg)</label>
-                    <input type="number" id="peso" required step="0.01" min="0.05" placeholder="Ex: 1.5" 
-                        class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-
-                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <div class="flex justify-between text-sm text-slate-600">
-                        <span>Preço por kg:</span>
-                        <span id="preview-preco-kg">R$ 0,00</span>
+                <form id="form-pedido" class="space-y-5">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">Nome do Cliente</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                <i class="far fa-user"></i>
+                            </span>
+                            <input type="text" id="cliente" required placeholder="Ex: João Silva" 
+                                class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium placeholder:text-slate-400 text-sm">
+                        </div>
                     </div>
-                    <div class="flex justify-between text-base font-bold text-blue-900 mt-1">
-                        <span>Total Automático:</span>
-                        <span id="preview-total">R$ 0,00</span>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">Produto / Espécie</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                <i class="fas fa-tag text-sm"></i>
+                            </span>
+                            <select id="select-peixe" required 
+                                class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all font-medium text-sm text-slate-700 appearance-none cursor-pointer">
+                                </select>
+                            <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </span>
+                        </div>
                     </div>
-                </div>
 
-                <button type="submit" 
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition duration-200 shadow">
-                    Confirmar Pedido
-                </button>
-            </form>
-        </div>
-
-        <div class="bg-white p-6 rounded-xl shadow-md border border-slate-200 lg:col-span-2 flex flex-col justify-between">
-            <div>
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-semibold text-slate-800 flex items-center gap-2">
-                        <i class="fas fa-clipboard-list text-blue-600"></i> Pedidos Realizados
-                    </h2>
-                    <span id="contador-pedidos" class="bg-slate-200 text-slate-700 text-xs font-bold px-2.5 py-1 rounded-full">
-                        0 pedidos
-                    </span>
-                </div>
-                
-                <div class="overflow-x-auto max-h-[350px] overflow-y-auto border border-slate-100 rounded-lg">
-                    <table class="w-full text-sm text-left text-slate-500">
-                        <thead class="text-xs text-slate-700 uppercase bg-slate-50 sticky top-0">
-                            <tr>
-                                <th class="px-4 py-3">Cliente</th>
-                                <th class="px-4 py-3">Peixe</th>
-                                <th class="px-4 py-3">Peso</th>
-                                <th class="px-4 py-3">Total</th>
-                                <th class="px-4 py-3 text-center">Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="lista-pedidos" class="divide-y divide-slate-100">
-                            </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="mt-6 pt-4 border-t border-slate-200 flex justify-between items-center">
-                <span class="text-lg font-semibold text-slate-700">Faturamento Total:</span>
-                <span id="faturamento-total" class="text-2xl font-black text-green-600">R$ 0,00</span>
-            </div>
-        </div>
-
-    </main>
-
-    <script>
-        // 1. Banco de dados simulado de peixes (Preço por KG)
-        const CATALOGO_PEIXES = [
-            { id: 1, nome: "Tilápia (Filé)", precoKg: 38.00 },
-            { id: 2, nome: "Salmão inteiro", precoKg: 89.90 },
-            { id: 3, nome: "Pescada Amarela", precoKg: 54.00 },
-            { id: 4, nome: "Camarão Médio", precoKg: 65.00 },
-            { id: 5, nome: "Bacalhau Dessalgado", precoKg: 120.00 }
-        ];
-
-        // 2. Estado da aplicação (Array de pedidos cadastrados)
-        let pedidos = [];
-
-        // 3. Elementos do DOM
-        const selectPeixe = document.getElementById('select-peixe');
-        const inputPeso = document.getElementById('peso');
-        const inputCliente = document.getElementById('cliente');
-        const formPedido = document.getElementById('form-pedido');
-        
-        const previewPrecoKg = document.getElementById('preview-preco-kg');
-        const previewTotal = document.getElementById('preview-total');
-        
-        const listaPedidosTbody = document.getElementById('lista-pedidos');
-        const contadorPedidos = document.getElementById('contador-pedidos');
-        const faturamentoTotal = document.getElementById('faturamento-total');
-
-        // 4. Inicializar opções de peixes no Select
-        function inicializarCatalogo() {
-            selectPeixe.innerHTML = CATALOGO_PEIXES.map(peixe => 
-                `<option value="${peixe.id}">${peixe.nome} - R$ ${peixe.precoKg.toFixed(2)}/kg</option>`
-            ).join('');
-            atualizarCalculoAutomatico();
-        }
-
-        // 5. Função utilitária para buscar peixe selecionado
-        function getPeixeSelecionado() {
-            const idSelecionado = parseInt(selectPeixe.value);
-            return CATALOGO_PEIXES.find(p => p.id === idSelecionado);
-        }
-
-        // 6. Cálculo em Tempo Real (Reativo)
-        function atualizarCalculoAutomatico() {
-            const peixe = getPeixeSelecionado();
-            const peso = parseFloat(inputPeso.value) || 0;
-
-            if (peixe) {
-                const total = peixe.precoKg * peso;
-                previewPrecoKg.textContent = `R$ ${peixe.precoKg.toFixed(2)}`;
-                previewTotal.textContent = `R$ ${total.toFixed(2)}`;
-            }
-        }
-
-        // Ouvintes de eventos para atualizar o preço enquanto o usuário digita/muda a opção
-        selectPeixe.addEventListener('change', actualizarCalculoAutomatico);
-        inputPeso.addEventListener('input', actualizarCalculoAutomatico);
-
-        // 7. Renderizar a tabela de pedidos e totais
-        function atualizarInterface() {
-            // Limpa a tabela
-            listaPedidosTbody.innerHTML = '';
-
-            if (pedidos.length === 0) {
-                listaPedidosTbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="text-center py-8 text-slate-400 italic">
-                            Nenhum pedido registrado hoje.
-                        </td>
-                    </tr>`;
-                contadorPedidos.textContent = "0 pedidos";
-                faturamentoTotal.textContent = "R$ 0,00";
-                return;
-            }
-
-            // Popula as linhas da tabela
-            let totalGeral = 0;
-            pedidos.forEach(pedido => {
-                totalGeral += pedido.valorTotal;
-
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 transition";
-                tr.innerHTML = `
-                    <td class="px-4 py-3 font-medium text-slate-900">${pedido.cliente}</td>
-                    <td class="px-4 py-3">${pedido.peixeNome}</td>
-                    <td class="px-4 py-3">${pedido.peso.toFixed(3)} kg</td>
-                    <td class="px-4 py-3 font-semibold text-slate-800">R$ ${pedido.valorTotal.toFixed(2)}</td>
-                    <td class="px-4 py-3 text-center">
-                        <button onclick="deletarPedido(${pedido.id})" class="text-red-500 hover:text-red-700 p-1">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </td>
-                `;
-                listaPedidosTbody.appendChild(tr);
-            });
-
-            // Atualiza resumos do topo e rodapé
-            contadorPedidos.textContent = `${pedidos.length} ${pedidos.length === 1 ? 'pedido' : 'pedidos'}`;
-            faturamentoTotal.textContent = `R$ ${totalGeral.toFixed(2)}`;
-        }
-
-        // 8. Evento de envio do formulário (Cadastrar Pedido)
-        formPedido.addEventListener('submit', function(e) {
-            e.preventDefault(); // Impede a página de recarregar
-
-            const peixe = getPeixeSelecionado();
-            const peso = parseFloat(inputPeso.value);
-            const cliente = inputCliente.value.trim();
-
-            if (!peixe || !peso || !cliente) return;
-
-            // Cria o objeto do pedido
-            const novoPedido = {
-                id: Date.now(), // ID único usando timestamp
-                cliente: cliente,
-                peixeNome: peixe.nome,
-                peso: peso,
-                valorTotal: peixe.precoKg * peso
-            };
-
-            // Adiciona ao estado
-            pedidos.push(novoPedido);
-
-            // Reseta o formulário mantendo o foco
-            inputCliente.value = '';
-            inputPeso.value = '';
-            inputCliente.focus();
-
-            // Atualiza tela
-            atualizarCalculoAutomatico();
-            atualizarInterface();
-        });
-
-        // 9. Deletar um pedido da lista
-        function deletarPedido(id) {
-            pedidos = pedidos.filter(pedido => pedido.id !== id);
-            atualizarInterface();
-        }
-
-        // Inicialização do App ao carregar a página
-        window.addEventListener('DOMContentLoaded', () => {
-            inicializarCatalogo();
-            atualizarInterface();
-        });
-    </script>
-</body>
-</html>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase tracking-wider mb-2">Quantidade (KG)</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                                <i class="fas fa-weight-hanging text-sm"></i>
+                            </span>
+                            <input type="number" id="peso" required step="0.001" min
